@@ -57,8 +57,24 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  if (Serial.available() > 0) {
+    String input = Serial.readStringUntil("\n") ; 
+    long stps = input.toFloat() ; 
 
+    String input = Serial.readStringUntil("\n") ; 
+    int board = input.toInt() ; 
+
+    if (stps > 0) {
+      if (posStep(stps,board)) { Serial.println("Normal \n") ; }
+      else { Serial.println("Hit positive switch \n") ; } // define board 
+    }
+    else if (stps < 0) {
+      if (negStep(-stps,board)) {Serial.println("Normal \n") ; }
+      else {Serial.println("Hit negative switch \n") ; } 
+    }
+
+    flush() ; 
+  }
 }
 
 bool posStep(float stps, int board) {
